@@ -33,4 +33,8 @@ public class JobFreqService {
     public double getFrequency(String job) {
         return freqMap.getOrDefault(job, 0.0);
     }
+
+    public Map<String, Double> getJobFreqMap() {
+        return freqMap;
+    }
 }

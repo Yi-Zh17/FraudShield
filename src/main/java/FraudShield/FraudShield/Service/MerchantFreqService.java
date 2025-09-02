@@ -35,4 +35,8 @@ public class MerchantFreqService {
     public double getFrequency(String merchant) {
         return merchFreqMap.getOrDefault(merchant, 0.0);
     }
+
+    public Map<String, Double> getMerchMap() {
+        return merchFreqMap;
+    }
 }

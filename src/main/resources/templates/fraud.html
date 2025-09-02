@@ -1,15 +1,81 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Fraud Check</title>
 </head>
-<body>
-<h1>Fraud Check</h1>
-<form action="/fraud/check" method="post">
-    <label>Transaction Amount:</label>
-    <input type="number" name="amt" required>
-    <button type="submit">Check</button>
-</form>
-<a href="/">Back</a>
+
+<link th:href="@{/css/output.css}" rel="stylesheet">
+
+<body class="bg-gray-200">
+    <div class="align-items-center justify-items-center">
+    <h1 class="text-center text-3xl w-1/2 py-5 bg-blue-900 text-white font-semibold">Fraud Check</h1>
+    <form action="/fraud/check" method="post" class="flex flex-col space-y-2 w-1/2 bg-white p-5">
+        <label for="amt">Transaction Amount:</label>
+        <input type="number" name="amt" class="w-40 border-2 rounded" required>
+        <label for="city_pop">City Population:</label>
+        <input type="number" name="city_pop" class="w-40 border-2 rounded" required>
+        <label for="age">Age:</label>
+        <input type="number" name="age" class="w-40 border-2 rounded" required>
+        <label for="category">Category:</label>
+        <select name="category" id="category" class="border rounded p-2 w-64">
+            <option value="" disabled selected>-- Select Category --</option>
+            <th:block th:each="entry : ${categories}">
+                <option th:value="${entry.key}" th:text="${#strings.capitalize(entry.key.replace('_', ' '))}"></option>
+            </th:block>
+        </select>
+        <label for="state">State</label>
+        <select name="state" id="state" class="border rounded p-2 w-64">
+            <option value="" disabled selected>-- Select State --</option>
+            <th:block th:each="entry: ${states}">
+                <option th:value="${entry.key}" th:text="${#strings.capitalize(entry.key)}"></option>
+            </th:block>
+        </select>
+        <label for="merchant">Merchant</label>
+        <select name="merchant" id="merchant" class="border rounded p-2 w-64">
+            <option value="" disabled selected>-- Select Merchant --</option>
+            <th:block th:each="entry: ${merchants}">
+                <option th:value="${entry.key}" th:text="${#strings.capitalize(entry.key.replace('fraud_', ''))}">
+                </option>
+            </th:block>
+        </select>
+        <label for="gender">Gender:</label>
+        <select name="gender" id="gender" class="border rounded p-2 w-64 ">
+            <option value="" disabled selected>-- Select Gender --</option>
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+        </select>
+        <label for="job">Job:</label>
+        <select name="job" id="job" class="border rounded p-2 w-64">
+            <option value="" disabled selected>-- Select Job --</option>
+            <th:block th:each="entry: ${jobs}">
+                <option th:value="${entry.key}" th:text="${#strings.capitalize(entry.key)}"></option>
+            </th:block>
+        </select>
+        <label for="hour">Transaction Hour:</label>
+        <select name="hour" id="hour" class="border rounded p-2 w-64 ">
+            <option value="" disabled selected>-- Select Hour --</option>
+            <th:block th:each="i : ${#numbers.sequence(0,23)}">
+                <option th:value="${i}" th:text="${i}"></option>
+            </th:block>
+        </select>
+        <label for="day" id="day">Day of Week:</label>
+        <select name="day" id="day" class="border rounded p-2 w-64">
+            <option value="" disabled selected>-- Select Day --</option>
+            <option value="0">Monday</option>
+            <option value="1">Tuesday</option>
+            <option value="2">Wednesday</option>
+            <option value="3">Thursday</option>
+            <option value="4">Friday</option>
+            <option value="5">Saturday</option>
+            <option value="6">Sunday</option>
+        </select>
+        <div class="flex p-auto justify-center mt-3">
+        <button type="submit" class="p-2 bg-blue-800 text-white rounded w-1/5">Check</button>
+        </div>
+    </form>
+    </div>  
+    <a href="/">Back</a>
 </body>
+
 </html>
