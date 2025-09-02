@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fraud Check</title>
+</head>
+<body>
+<h1>Fraud Check</h1>
+<form action="/fraud/check" method="post">
+    <label>Transaction Amount:</label>
+    <input type="number" name="amt" required>
+    <button type="submit">Check</button>
+</form>
+<a href="/">Back</a>
+</body>
+</html>
