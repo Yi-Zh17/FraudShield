@@ -6,20 +6,25 @@ import FraudShield.FraudShield.Service.FraudCheckService;
 import FraudShield.FraudShield.Service.JobFreqService;
 import FraudShield.FraudShield.Service.MerchantFreqService;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/fraud")
 public class FraudController {
+    @Autowired
     private FraudCheckService fraudCheckService;
+
     private MerchantFreqService merchFreqService;
     private JobFreqService jobFreqService;
 
@@ -97,7 +102,7 @@ public class FraudController {
 
         merchFreqService = new MerchantFreqService();
         Map<String, Double> merchFreqMap = merchFreqService.getMerchMap();
-        
+
         jobFreqService = new JobFreqService();
         Map<String, Double> jobFreqMap = jobFreqService.getJobFreqMap();
 
@@ -108,9 +113,19 @@ public class FraudController {
 
         return "fraud";
     }
-    
+
     @PostMapping("/check")
-    public FraudCheckResponse checkFraud(@RequestBody FraudCheckRequest request) throws Exception {
-        return fraudCheckService.checkFraud(request);
+    public String checkFraud(@ModelAttribute FraudCheckRequest request, Model model) {
+        try {
+            FraudCheckResponse response = fraudCheckService.checkFraud(request);
+            double prob = 1.0 / (1.0 + Math.exp(-response.prob())) * 100;
+            BigDecimal bd = new BigDecimal(prob, new MathContext(4));
+            model.addAttribute("result", response.is_fraud());
+            model.addAttribute("probability", bd);
+            return "fraud-result"; // Render result page
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "fraud"; // Show form again with error
+        }
     }
 }

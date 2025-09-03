@@ -33,8 +33,8 @@ public class ModelPredictionService implements AutoCloseable{
         OrtSession.Result result = session.run(Collections.singletonMap("input", inputTensor));
 
         // Extract output
-        float[][] output = (float[][]) result.get(0).getValue();
-        return output[0][0];
+        float[] output = (float[]) result.get(0).getValue();
+        return output[0];
     }
 
     @Override

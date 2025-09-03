@@ -113,7 +113,7 @@ public class FraudCheckService {
 
         // State
         sum = 0;
-        while(i < 67) {
+        while(i < 68) {
             sum += features[i];
             ++i;
         }

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Fraud Result</title>
+    <title>Prediction Result</title>
 </head>
 <body>
-<h1>Fraud Result</h1>
-<p>Amount: <b th:text="${amount}"></b></p>
-<p th:if="${fraudResult}">🚨 Fraud Detected!</p>
-<p th:unless="${fraudResult}">✅ Legit Transaction</p>
-<a href="/fraud">Try Again</a> | <a href="/">Home</a>
+<h1>Prediction Result</h1>
+<p th:if="${result}">🚨 Fraud very likely!</p>
+<p th:if="${result}" th:text="'Probability: ' + ${probability} + '%'"></p>
+<p th:unless="${result}">✅ Unlikely to be fraud</p>
+<p th:unless="${result}" th:text="'Probability of fraud: ' + ${probability} + '%'"></p>
+<button onclick="window.location.href='/fraud'">Try Again</button> | <button onclick="window.location.href='/'">Home</button>
 </body>
 </html>

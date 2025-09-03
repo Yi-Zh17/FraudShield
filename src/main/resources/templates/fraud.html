@@ -11,8 +11,8 @@
     <div class="align-items-center justify-items-center">
     <h1 class="text-center text-3xl w-1/2 py-5 bg-blue-900 text-white font-semibold">Fraud Check</h1>
     <form action="/fraud/check" method="post" class="flex flex-col space-y-2 w-1/2 bg-white p-5">
-        <label for="amt">Transaction Amount:</label>
-        <input type="number" name="amt" class="w-40 border-2 rounded" required>
+        <label for="amount">Transaction Amount:</label>
+        <input type="number" name="amount" class="w-40 border-2 rounded" required>
         <label for="city_pop">City Population:</label>
         <input type="number" name="city_pop" class="w-40 border-2 rounded" required>
         <label for="age">Age:</label>
@@ -53,14 +53,14 @@
             </th:block>
         </select>
         <label for="hour">Transaction Hour:</label>
-        <select name="hour" id="hour" class="border rounded p-2 w-64 ">
+        <select name="transaction_hour" id="hour" class="border rounded p-2 w-64 ">
             <option value="" disabled selected>-- Select Hour --</option>
             <th:block th:each="i : ${#numbers.sequence(0,23)}">
                 <option th:value="${i}" th:text="${i}"></option>
             </th:block>
         </select>
         <label for="day" id="day">Day of Week:</label>
-        <select name="day" id="day" class="border rounded p-2 w-64">
+        <select name="transaction_dayOfWeek" id="day" class="border rounded p-2 w-64">
             <option value="" disabled selected>-- Select Day --</option>
             <option value="0">Monday</option>
             <option value="1">Tuesday</option>
@@ -70,12 +70,12 @@
             <option value="5">Saturday</option>
             <option value="6">Sunday</option>
         </select>
-        <div class="flex p-auto justify-center mt-3">
+        <div class="flex justify-center mt-3 space-x-10">
         <button type="submit" class="p-2 bg-blue-800 text-white rounded w-1/5">Check</button>
+        <button onclick="window.location.href='/'" class="p-2 bg-blue-800 text-white rounded w-1/5">Back</button>
         </div>
     </form>
+    <p th:text="${error}"></p>
     </div>  
-    <a href="/">Back</a>
 </body>
-
 </html>
