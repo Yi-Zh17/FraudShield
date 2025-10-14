@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraudshield-deployment
+  labels:
+    app: fraudshield
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fraudshield
+  template:
+    metadata:
+      labels:
+        app: fraudshield
+    spec:
+      containers:
+        - name: fraudshield
+          image: yz17/fraudshield:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: JAVA_OPTS
+              value: "-Xms256m -Xmx512m"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
