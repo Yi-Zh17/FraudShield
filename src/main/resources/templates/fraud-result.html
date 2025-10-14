@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Prediction Result</title>
 </head>
-<body>
-<h1>Prediction Result</h1>
-<p th:if="${result}">🚨 Fraud very likely!</p>
-<p th:if="${result}" th:text="'Probability: ' + ${probability} + '%'"></p>
-<p th:unless="${result}">✅ Unlikely to be fraud</p>
-<p th:unless="${result}" th:text="'Probability of fraud: ' + ${probability} + '%'"></p>
-<button onclick="window.location.href='/fraud'">Try Again</button> | <button onclick="window.location.href='/'">Home</button>
+
+<link th:href="@{/css/output.css}" rel="stylesheet">
+
+<body class="bg-gray-200 h-screen">
+    <div class="items-center justify-items-center h-full">
+        <h1 class="text-center text-3xl w-1/2 py-5 bg-blue-900 text-white font-semibold">Prediction Result</h1>
+        <div class="flex flex-col space-y-2 w-1/2 bg-white p-5 h-full">
+            <p th:if="${result}">🚨 Fraud very likely!</p>
+            <p th:if="${result}" th:text="'Probability: ' + ${probability} + '%'"></p>
+            <p th:unless="${result}">✅ Unlikely to be fraud</p>
+            <p th:unless="${result}" th:text="'Probability of fraud: ' + ${probability} + '%'"></p>
+            <div class="flex items-center justify-center w-full space-x-5 mt-10">
+                <button onclick="window.location.href='/fraud'" class="p-2 bg-blue-800 text-white rounded w-1/5 mr-2.5">Try Again</button>
+                <button
+                    onclick="window.location.href='/'" class="p-2 bg-blue-800 text-white rounded w-1/5 ml-2.5">Home</button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
