@@ -6,6 +6,11 @@ import FraudShield.FraudShield.Model.FraudCheckResponse;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import FraudShield.FraudShield.Repository.FraudAuditRepository;
+import FraudShield.FraudShield.Entity.FraudAudit;
+import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -13,8 +18,12 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FraudCheckService {
     private final ModelPredictionService model;
+    private final FraudAuditRepository auditRepository;
 
-    public FraudCheckService() throws Exception {
+    @Autowired
+    public FraudCheckService(FraudAuditRepository auditRepository) throws Exception {
+        this.auditRepository = auditRepository;
+
         ClassPathResource modelRes = new ClassPathResource("static/model.onnx");
         ClassPathResource dataRes = new ClassPathResource("static/model.onnx.data");
 
@@ -28,6 +37,7 @@ public class FraudCheckService {
         this.model = new ModelPredictionService(modelPath.toString());
     }
 
+    @Transactional
     public FraudCheckResponse checkFraud(FraudCheckRequest request) throws Exception {
         // Preprocess input
         double[] features = process(request);
@@ -37,6 +47,15 @@ public class FraudCheckService {
         double prob = model.predict(features);
 
         boolean is_fraud = prob >= 0.5;
+
+        FraudAudit auditRecord = new FraudAudit();
+        auditRecord.setAmount(request.amount());
+        auditRecord.setState(request.state());
+        auditRecord.setMerchant(request.merchant());
+        auditRecord.setPredictedProbability(prob);
+        auditRecord.setFraud(is_fraud);
+
+        auditRepository.save(auditRecord); // Executes the SQL INSERT
 
         return new FraudCheckResponse(is_fraud, prob);
     }
