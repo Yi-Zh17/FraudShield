@@ -143,14 +143,6 @@ On push to `main`, the pipeline:
 2. Pushes it to GitHub Container Registry (`ghcr.io`)
 3. Deploys to Azure Web App for Containers via `azure/webapps-deploy`
 
-### Kubernetes
-
-Pre-built manifests (`deployment.yaml` + `service.yaml`) deploy the image `yz17/fraudshield:latest` with a LoadBalancer service on port 80. Apply them with:
-
-```bash
-kubectl apply -f deployment.yaml -f service.yaml
-```
-
 ## License
 
 This project is for educational/demonstration purposes.
