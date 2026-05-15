@@ -36,5 +36,4 @@ public class FraudAudit {
     public void setPredictedProbability(double predictedProbability) { this.predictedProbability = predictedProbability; }
     public void setFraud(boolean fraud) { isFraud = fraud; }
     
-    // You should also generate standard Getters here
 }
