@@ -118,7 +118,7 @@ public class FraudController {
     public String checkFraud(@ModelAttribute FraudCheckRequest request, Model model) {
         try {
             FraudCheckResponse response = fraudCheckService.checkFraud(request);
-            double prob = 1.0 / (1.0 + Math.exp(-response.prob())) * 100;
+            double prob = response.probability() * 100;
             BigDecimal bd = new BigDecimal(prob, new MathContext(4));
             model.addAttribute("result", response.is_fraud());
             model.addAttribute("probability", bd);

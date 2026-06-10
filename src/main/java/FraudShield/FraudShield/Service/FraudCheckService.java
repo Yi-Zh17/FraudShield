@@ -44,20 +44,25 @@ public class FraudCheckService {
         checkIntegrity(features);
 
         // Inference
-        double prob = model.predict(features);
+        double logit = model.predict(features);
+        double probability = sigmoid(logit);
 
-        boolean is_fraud = prob >= 0.5;
+        boolean is_fraud = probability >= 0.5;
 
         FraudAudit auditRecord = new FraudAudit();
         auditRecord.setAmount(request.amount());
         auditRecord.setState(request.state());
         auditRecord.setMerchant(request.merchant());
-        auditRecord.setPredictedProbability(prob);
+        auditRecord.setPredictedProbability(probability);
         auditRecord.setFraud(is_fraud);
 
         auditRepository.save(auditRecord); // Executes the SQL INSERT
 
-        return new FraudCheckResponse(is_fraud, prob);
+        return new FraudCheckResponse(is_fraud, probability);
+    }
+
+    private double sigmoid(double logit) {
+        return 1.0 / (1.0 + Math.exp(-logit));
     }
 
     // Preprocess the raw data before inference
